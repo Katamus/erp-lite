@@ -1,4 +1,4 @@
-package com.criscahub.erp_lite;
+package com.criscahub.erp_lite.erp_lite;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

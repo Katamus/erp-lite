@@ -1,4 +1,3 @@
 dependencies {
     implementation project(':erp-common')
-    implementation project(':erp-infrastructure')
 }
