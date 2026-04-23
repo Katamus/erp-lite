@@ -1,4 +1,4 @@
-package com.criscahub.erp_lite.erp_lite.persistence.jpa.entities;
+package com.criscahub.erp_lite.persistence.jpa.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

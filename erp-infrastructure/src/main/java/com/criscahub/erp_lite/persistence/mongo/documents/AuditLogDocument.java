@@ -1,4 +1,4 @@
-package com.criscahub.erp_lite.erp_lite.persistence.mongo.documents;
+package com.criscahub.erp_lite.persistence.mongo.documents;
 
 import lombok.*;
 import org.bson.types.ObjectId;

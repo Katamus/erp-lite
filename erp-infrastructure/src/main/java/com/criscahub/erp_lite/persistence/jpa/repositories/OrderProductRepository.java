@@ -1,6 +1,6 @@
-package com.criscahub.erp_lite.erp_lite.persistence.jpa.repositories;
+package com.criscahub.erp_lite.persistence.jpa.repositories;
 
-import com.criscahub.erp_lite.erp_lite.persistence.jpa.entities.OrderProductEntity;
+import com.criscahub.erp_lite.persistence.jpa.entities.OrderProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
