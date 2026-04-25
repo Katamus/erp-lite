@@ -7,7 +7,6 @@ import com.criscahub.erp_lite.persistence.aws.models.AwsConfigModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.awscore.AwsClient;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
@@ -18,7 +17,7 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AwsImageStorageService implements ImageStorageService {
+public class AwsImageStorageAdapter implements ImageStorageService {
 
     private final S3Client s3Client;
 
