@@ -29,5 +29,9 @@ dependencies {
 
     //Rest and web client
     api("org.springframework.boot:spring-boot-starter-web")
+
+    //mail
+    api("org.springframework.boot:spring-boot-starter-mail")
+    api("org.springframework.boot:spring-boot-starter-thymeleaf")
 }
 

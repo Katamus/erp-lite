@@ -1,4 +1,6 @@
-package com.criscahub.erp_lite.domain.customer;
+package com.criscahub.erp_lite.domain.ports;
+
+import com.criscahub.erp_lite.domain.customer.CustomerInfo;
 
 import java.util.Optional;
 

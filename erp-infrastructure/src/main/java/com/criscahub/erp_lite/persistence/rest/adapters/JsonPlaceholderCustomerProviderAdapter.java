@@ -2,7 +2,7 @@ package com.criscahub.erp_lite.persistence.rest.adapters;
 
 import com.criscahub.erp_lite.persistence.rest.dtos.UserDTO;
 import com.criscahub.erp_lite.domain.customer.CustomerInfo;
-import com.criscahub.erp_lite.domain.customer.CustomerProviderService;
+import com.criscahub.erp_lite.domain.ports.CustomerProviderService;
 import com.criscahub.erp_lite.persistence.rest.mappers.CustomerMapper;
 import com.criscahub.erp_lite.persistence.rest.models.JsonplaceholderConfigModel;
 import lombok.extern.slf4j.Slf4j;

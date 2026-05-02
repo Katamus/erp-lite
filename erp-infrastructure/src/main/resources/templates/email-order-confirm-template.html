@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmación de Orden</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f6f9; font-family: Arial, Helvetica, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f6f9; padding:30px 0;">
+  <tr>
+    <td align="center">
+
+      <table width="600" cellpadding="0" cellspacing="0" border="0"
+             style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08); border-top:6px solid #f4b942;">
+
+        <!-- Header -->
+        <tr>
+          <td align="center"
+              style="background: linear-gradient(135deg, #3361ab 0%, #4b7fd1 100%); padding:40px 30px;">
+
+            <h1 style="margin:0; color:#ffffff; font-size:28px;">
+              Confirmación de Compra
+            </h1>
+
+            <p style="margin:12px 0 0; color:#dfe9ff; font-size:16px;">
+              Gracias por tu compra, <strong style="color:#f4b942;">{{customerName}}</strong>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:40px 35px; color:#333333;">
+
+            <p style="margin-top:0; font-size:16px; line-height:1.6;">
+              Hemos recibido exitosamente tu orden y ya se encuentra en proceso.
+              A continuación encontrarás el resumen de tu compra:
+            </p>
+
+            <!-- Order Info -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="margin-top:25px; border-collapse:collapse;">
+
+              <tr>
+                <td style="padding:14px; background-color:#f7f9fc; border-bottom:1px solid #e5eaf2;">
+                  <strong>Número de Orden</strong>
+                </td>
+                <td style="padding:14px; background-color:#f7f9fc; border-bottom:1px solid #e5eaf2; color:#3361ab;" align="right">
+                  {{orderNumber}}
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:14px; border-bottom:1px solid #e5eaf2;">
+                  <strong>ID de la Orden</strong>
+                </td>
+                <td style="padding:14px; border-bottom:1px solid #e5eaf2; color:#f4b942;" align="right">
+                  {{orderId}}
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:14px; background-color:#f7f9fc; border-bottom:1px solid #e5eaf2;">
+                  <strong>Fecha de Compra</strong>
+                </td>
+                <td style="padding:14px; background-color:#f7f9fc; border-bottom:1px solid #e5eaf2;" align="right">
+                  {{orderDate}}
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:14px; border-bottom:1px solid #e5eaf2;">
+                  <strong>Cantidad de Productos</strong>
+                </td>
+                <td style="padding:14px; border-bottom:1px solid #e5eaf2;" align="right">
+                  {{itemsCount}}
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:18px; background-color:#eef4ff; font-size:18px;">
+                  <strong>Total Pagado</strong>
+                </td>
+                <td style="padding:18px; background-color:#eef4ff; font-size:20px; color:#3361ab;"
+                    align="right">
+                  <strong>{{currency}} {{totalAmount}}</strong>
+                </td>
+              </tr>
+
+            </table>
+
+            <!-- Message -->
+            <p style="margin-top:35px; font-size:15px; line-height:1.7; color:#555555;">
+              Estamos preparando tu pedido y pronto recibirás nuevas actualizaciones
+              sobre el estado de entrega.
+            </p>
+
+            <p style="font-size:15px; line-height:1.7; color:#555555;">
+              Si tienes alguna duda relacionada con tu compra, puedes responder a este correo
+              y nuestro equipo te ayudará lo antes posible.
+            </p>
+
+            <!-- CTA -->
+
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td align="center"
+              style="background-color:#f1f4f8; padding:25px; font-size:13px; color:#7b8794; border-top:2px solid #f4b942;">
+
+            <p style="margin:0 0 8px;">
+              Este correo fue generado automáticamente para la orden
+              <strong style="color:#3361ab;">#{{orderNumber}}</strong>
+            </p>
+
+            <p style="margin:0;">
+              © {{year}} {{companyName}}. Todos los derechos reservados.
+            </p>
+
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
