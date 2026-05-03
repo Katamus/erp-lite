@@ -1,6 +1,6 @@
 package com.criscahub.erp_lite.persistence.rest.mappers;
 
-import com.criscahub.erp_lite.domain.customer.CustomerInfo;
+import com.criscahub.erp_lite.domain.entities.customer.CustomerInfo;
 import com.criscahub.erp_lite.persistence.rest.dtos.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

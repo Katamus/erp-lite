@@ -12,10 +12,10 @@ public record AuditInfo(String createdBy, Instant createdAt, Instant updatedAt) 
             throw new IllegalArgumentException("CreatedBy cannot be null or blank");
         }
         if (createdAt == null) {
-            throw new IllegalArgumentException("CreatedAt cannot be null");
+            createdAt = Instant.now();
         }
         if (updatedAt == null) {
-            throw new IllegalArgumentException("UpdatedAt cannot be null");
+            updatedAt= createdAt;
         }
     }
 

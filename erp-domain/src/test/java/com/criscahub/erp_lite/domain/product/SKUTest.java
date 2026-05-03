@@ -1,5 +1,6 @@
 package com.criscahub.erp_lite.domain.product;
 
+import com.criscahub.erp_lite.domain.entities.product.SKU;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

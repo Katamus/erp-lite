@@ -16,8 +16,7 @@ import java.util.UUID;
 public class OrderProductEntity {
 
     @Id
-    @GeneratedValue
-    @org.hibernate.annotations.UuidGenerator
+    @Column(name = "id", columnDefinition = "uuid", nullable = false, updatable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

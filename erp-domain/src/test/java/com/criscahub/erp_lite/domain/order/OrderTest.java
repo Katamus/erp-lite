@@ -1,7 +1,11 @@
 package com.criscahub.erp_lite.domain.order;
 
-import com.criscahub.erp_lite.domain.order.events.*;
-import com.criscahub.erp_lite.domain.product.*;
+import com.criscahub.erp_lite.domain.entities.order.Customer;
+import com.criscahub.erp_lite.domain.entities.order.OrderRoot;
+import com.criscahub.erp_lite.domain.entities.order.OrderItem;
+import com.criscahub.erp_lite.domain.entities.order.OrderNumber;
+import com.criscahub.erp_lite.domain.entities.order.events.*;
+import com.criscahub.erp_lite.domain.entities.product.*;
 import com.criscahub.erp_lite.domain.shared.CustomerId;
 import com.criscahub.erp_lite.domain.shared.Money;
 import com.criscahub.erp_lite.domain.shared.Quantity;
@@ -24,7 +28,7 @@ class OrderTest {
         final String msgEx = "Order number cannot be null";
 
         IllegalArgumentException targetEx = assertThrows(IllegalArgumentException.class,
-                () -> Order.create(
+                () -> OrderRoot.create(
                         null,
                         createCustomer(),
                         createOrderItems(),
@@ -40,7 +44,7 @@ class OrderTest {
         final String msgEx = "Customer cannot be null";
 
         IllegalArgumentException targetEx = assertThrows(IllegalArgumentException.class,
-                () -> Order.create(
+                () -> OrderRoot.create(
                         OrderNumber.of("ORD-2025-001"),
                         null,
                         createOrderItems(),
@@ -56,7 +60,7 @@ class OrderTest {
         final String msgEx = "Order must have at least one item";
 
         IllegalArgumentException targetExNull = assertThrows(IllegalArgumentException.class,
-                () -> Order.create(
+                () -> OrderRoot.create(
                         OrderNumber.of("ORD-2025-001"),
                         createCustomer(),
                         null,
@@ -66,7 +70,7 @@ class OrderTest {
         assertEquals(msgEx, targetExNull.getMessage());
 
         IllegalArgumentException targetExEmpty = assertThrows(IllegalArgumentException.class,
-                () -> Order.create(
+                () -> OrderRoot.create(
                         OrderNumber.of("ORD-2025-001"),
                         createCustomer(),
                         List.of(),
@@ -83,7 +87,7 @@ class OrderTest {
         Customer customer = createCustomer();
         List<OrderItem> items = createOrderItems();
 
-        Order order = Order.create(orderNumber, customer, items, "test-user");
+        OrderRoot order = OrderRoot.create(orderNumber, customer, items, "test-user");
 
         assertNotNull(order.getId());
         assertEquals(orderNumber, order.getOrderNumber());
@@ -102,7 +106,7 @@ class OrderTest {
     @DisplayName("Should Calculate Total Amount Correctly")
     void shouldCalculateTotalAmountCorrectly() {
         List<OrderItem> items = createOrderItems();
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
 
         Money expectedTotal = items.get(0).getSubtotal();
         for (int i = 1; i < items.size(); i++) {
@@ -115,14 +119,14 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalArgumentException When Items Have Different Currencies")
     void shouldThrowIllegalArgumentExceptionWhenItemsHaveDifferentCurrencies() {
-        Product product1 = createProduct("LAPTOP-001", "Laptop", 999.99, USD);
-        Product product2 = createProduct("MOUSE-001", "Mouse", 29.99, Currency.getInstance("EUR"));
+        ProductRoot product1 = createProduct("LAPTOP-001", "Laptop", 999.99, USD);
+        ProductRoot product2 = createProduct("MOUSE-001", "Mouse", 29.99, Currency.getInstance("EUR"));
 
         OrderItem item1 = OrderItem.from(product1, Quantity.of(1));
         OrderItem item2 = OrderItem.from(product2, Quantity.of(1));
 
         IllegalArgumentException targetEx = assertThrows(IllegalArgumentException.class,
-                () -> Order.create(
+                () -> OrderRoot.create(
                         OrderNumber.of("ORD-2025-001"),
                         createCustomer(),
                         List.of(item1, item2),
@@ -135,7 +139,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Confirm Order And Register OrderConfirmed Event")
     void shouldConfirmOrderAndRegisterOrderConfirmedEvent() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         order.clearDomainEvents();
 
         assertTrue(order.getStatus().isPending());
@@ -152,7 +156,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Ship Order And Register OrderShipped Event")
     void shouldShipOrderAndRegisterOrderShippedEvent() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         order.confirm();
         order.clearDomainEvents();
 
@@ -170,7 +174,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Deliver Order And Register OrderDelivered Event")
     void shouldDeliverOrderAndRegisterOrderDeliveredEvent() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         order.confirm();
         order.ship();
         order.clearDomainEvents();
@@ -189,7 +193,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Cancel Order And Register OrderCancelled Event")
     void shouldCancelOrderAndRegisterOrderCancelledEvent() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         order.clearDomainEvents();
 
         String reason = "Customer requested cancellation";
@@ -207,7 +211,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalArgumentException When Cancellation Reason Is Null Or Blank")
     void shouldThrowIllegalArgumentExceptionWhenCancellationReasonIsNullOrBlank() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
 
         IllegalArgumentException targetExNull = assertThrows(IllegalArgumentException.class,
                 () -> order.cancel(null));
@@ -223,7 +227,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalStateException When Invalid Status Transition")
     void shouldThrowIllegalStateExceptionWhenInvalidStatusTransition() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
 
         // Cannot ship a PENDING order
         IllegalStateException targetEx1 = assertThrows(IllegalStateException.class,
@@ -241,11 +245,11 @@ class OrderTest {
     @Test
     @DisplayName("Should Add Item To Order When Status Is PENDING")
     void shouldAddItemToOrderWhenStatusIsPENDING() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         int initialItemCount = order.getItems().size();
         Money initialTotal = order.getTotalAmount();
 
-        Product newProduct = createProduct("KEYBOARD-001", "Keyboard", 79.99, USD);
+        ProductRoot newProduct = createProduct("KEYBOARD-001", "Keyboard", 79.99, USD);
         OrderItem newItem = OrderItem.from(newProduct, Quantity.of(1));
 
         order.addItem(newItem);
@@ -257,10 +261,10 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalStateException When Adding Item To Non-PENDING Order")
     void shouldThrowIllegalStateExceptionWhenAddingItemToNonPENDINGOrder() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         order.confirm();
 
-        Product newProduct = createProduct("KEYBOARD-001", "Keyboard", 79.99, USD);
+        ProductRoot newProduct = createProduct("KEYBOARD-001", "Keyboard", 79.99, USD);
         OrderItem newItem = OrderItem.from(newProduct, Quantity.of(1));
 
         IllegalStateException targetEx = assertThrows(IllegalStateException.class,
@@ -272,7 +276,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalArgumentException When Adding Null Item")
     void shouldThrowIllegalArgumentExceptionWhenAddingNullItem() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
 
         IllegalArgumentException targetEx = assertThrows(IllegalArgumentException.class,
                 () -> order.addItem(null));
@@ -283,7 +287,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Remove Item From Order When Status Is PENDING")
     void shouldRemoveItemFromOrderWhenStatusIsPENDING() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         OrderItem itemToRemove = order.getItems().get(0);
         int initialItemCount = order.getItems().size();
         Money initialTotal = order.getTotalAmount();
@@ -297,7 +301,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalStateException When Removing Item From Non-PENDING Order")
     void shouldThrowIllegalStateExceptionWhenRemovingItemFromNonPENDINGOrder() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         order.confirm();
         OrderItem itemToRemove = order.getItems().get(0);
 
@@ -310,7 +314,7 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalArgumentException When Removing Null Item")
     void shouldThrowIllegalArgumentExceptionWhenRemovingNullItem() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
 
         IllegalArgumentException targetEx = assertThrows(IllegalArgumentException.class,
                 () -> order.removeItem(null));
@@ -321,8 +325,8 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalArgumentException When Removing Non-Existent Item")
     void shouldThrowIllegalArgumentExceptionWhenRemovingNonExistentItem() {
-        Order order = createValidOrder();
-        Product otherProduct = createProduct("OTHER-001", "Other", 50.0, USD);
+        OrderRoot order = createValidOrder();
+        ProductRoot otherProduct = createProduct("OTHER-001", "Other", 50.0, USD);
         OrderItem nonExistentItem = OrderItem.from(otherProduct, Quantity.of(1));
 
         IllegalArgumentException targetEx = assertThrows(IllegalArgumentException.class,
@@ -334,9 +338,9 @@ class OrderTest {
     @Test
     @DisplayName("Should Throw IllegalStateException When Removing Last Item")
     void shouldThrowIllegalStateExceptionWhenRemovingLastItem() {
-        Product product = createProduct("LAPTOP-001", "Laptop", 999.99, USD);
+        ProductRoot product = createProduct("LAPTOP-001", "Laptop", 999.99, USD);
         OrderItem item = OrderItem.from(product, Quantity.of(1));
-        Order order = Order.create(
+        OrderRoot order = OrderRoot.create(
                 OrderNumber.of("ORD-2025-001"),
                 createCustomer(),
                 List.of(item),
@@ -352,10 +356,10 @@ class OrderTest {
     @Test
     @DisplayName("Should Return Unmodifiable List Of Items")
     void shouldReturnUnmodifiableListOfItems() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
         List<OrderItem> items = order.getItems();
 
-        Product newProduct = createProduct("KEYBOARD-001", "Keyboard", 79.99, USD);
+        ProductRoot newProduct = createProduct("KEYBOARD-001", "Keyboard", 79.99, USD);
         OrderItem newItem = OrderItem.from(newProduct, Quantity.of(1));
 
         assertThrows(UnsupportedOperationException.class,
@@ -365,8 +369,8 @@ class OrderTest {
     @Test
     @DisplayName("Should Support Equals And HashCode By ID")
     void shouldSupportEqualsAndHashCodeByID() {
-        Order order1 = createValidOrder();
-        Order order2 = createValidOrder();
+        OrderRoot order1 = createValidOrder();
+        OrderRoot order2 = createValidOrder();
 
         // Different orders should not be equal
         assertNotEquals(order1, order2);
@@ -376,14 +380,14 @@ class OrderTest {
     @Test
     @DisplayName("Should Have A Non Null ToString")
     void shouldHaveANonNullToString() {
-        Order order = createValidOrder();
+        OrderRoot order = createValidOrder();
 
         assertNotNull(order.toString());
         assertFalse(order.toString().isEmpty());
     }
 
-    private Order createValidOrder() {
-        return Order.create(
+    private OrderRoot createValidOrder() {
+        return OrderRoot.create(
                 OrderNumber.of("ORD-2025-001"),
                 createCustomer(),
                 createOrderItems(),
@@ -396,8 +400,8 @@ class OrderTest {
     }
 
     private List<OrderItem> createOrderItems() {
-        Product product1 = createProduct("LAPTOP-001", "Laptop Computer", 999.99, USD);
-        Product product2 = createProduct("MOUSE-001", "Wireless Mouse", 29.99, USD);
+        ProductRoot product1 = createProduct("LAPTOP-001", "Laptop Computer", 999.99, USD);
+        ProductRoot product2 = createProduct("MOUSE-001", "Wireless Mouse", 29.99, USD);
 
         OrderItem item1 = OrderItem.from(product1, Quantity.of(1));
         OrderItem item2 = OrderItem.from(product2, Quantity.of(2));
@@ -405,8 +409,8 @@ class OrderTest {
         return List.of(item1, item2);
     }
 
-    private Product createProduct(String skuValue, String name, double price, Currency currency) {
-        return Product.create(
+    private ProductRoot createProduct(String skuValue, String name, double price, Currency currency) {
+        return ProductRoot.create(
                 SKU.of(skuValue),
                 ProductName.of(name),
                 "Description for " + name,
