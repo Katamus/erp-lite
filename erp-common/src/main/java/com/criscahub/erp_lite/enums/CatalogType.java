@@ -1,9 +1,10 @@
-package com.criscahub.erp_lite.persistence.mongo.documents;
+package com.criscahub.erp_lite.enums;
 
 public enum CatalogType {
     PRODUCT_CATEGORIES,
     ORDER_STATUSES,
     PAYMENT_METHODS,
     SHIPPING_METHODS,
-    COUNTRIES
+    COUNTRIES,
+    CURRENCIES
 }

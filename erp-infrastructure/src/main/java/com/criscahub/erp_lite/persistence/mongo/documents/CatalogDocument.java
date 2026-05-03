@@ -1,5 +1,6 @@
 package com.criscahub.erp_lite.persistence.mongo.documents;
 
+import com.criscahub.erp_lite.enums.CatalogType;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

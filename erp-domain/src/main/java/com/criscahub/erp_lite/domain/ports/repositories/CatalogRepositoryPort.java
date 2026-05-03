@@ -1,20 +1,21 @@
 package com.criscahub.erp_lite.domain.ports.repositories;
 
-import com.criscahub.erp_lite.domain.entities.catalog.CatalogRoot;
-import com.criscahub.erp_lite.domain.entities.catalog.CatalogItem;
+import com.criscahub.erp_lite.domain.views.CatalogView;
+import com.criscahub.erp_lite.domain.views.ItemsView;
+import com.criscahub.erp_lite.enums.CatalogType;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- *  Port for Storage o consult Catalog
+ *  Port read-only for Catalog
  */
 public interface CatalogRepositoryPort {
 
-    Optional<CatalogRoot> findByType(CatalogItem type);
+    Optional<CatalogView> findByType(CatalogType type);
 
-    List<CatalogItem> findItemsByType(CatalogItem type);
+    List<ItemsView> findItemsByType(CatalogType type);
 
-    Optional<CatalogItem> findItemBtTypeAndCode(CatalogItem type, String code);
+    Optional<ItemsView> findItemByTypeAndCode(CatalogType type, String code);
 
 }
