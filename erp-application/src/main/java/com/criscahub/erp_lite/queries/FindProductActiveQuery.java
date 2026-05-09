@@ -2,6 +2,7 @@ package com.criscahub.erp_lite.queries;
 
 import com.criscahub.erp_lite.domain.ports.repositories.ProductCatalogRepositoryPort;
 import com.criscahub.erp_lite.domain.views.ProductView;
+import com.criscahub.erp_lite.exceptions.QueryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,12 @@ public class FindProductActiveQuery {
 
     public List<ProductView> execute() {
         log.info("Execute FindProductActiveQuery");
+        try {
+            return this.productCatalogRepository.findActive();
+        }catch (RuntimeException e){
+            throw new QueryException("Error executing FindProductActiveQuery");
+        }
 
-        return this.productCatalogRepository.findActive();
     }
 
 }

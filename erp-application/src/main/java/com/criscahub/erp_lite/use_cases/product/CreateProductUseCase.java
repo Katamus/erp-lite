@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Currency;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -73,7 +72,6 @@ public class CreateProductUseCase {
     }
 
     private @Nullable ProductImage uploadImg(CreateProductCommand command) {
-        ProductImage productImage = null;
         if( !command.hasImage() ){
             log.info("Product image is empty");
         }

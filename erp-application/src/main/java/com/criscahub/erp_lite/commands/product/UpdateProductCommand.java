@@ -8,25 +8,23 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public record UpdateProductCommand (
+    String productId,
 
-@NotBlank(message = "Product ID cannot be null or blank")
-String productId,
+    @Size(min = 3, max = 200, message = "Product name must be between 3 and 200 characters")
+    String name,
 
-@Size(min = 3, max = 200, message = "Product name must be between 3 and 200 characters")
-String name,
+    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
+    String description,
 
-@Size(max = 1000, message = "Description cannot exceed 1000 characters")
-String description,
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price must be greater than 0")
+    @Digits(integer = 13, fraction = 2, message = "Price format invalid (max 13 digits, 2 decimals)")
+    BigDecimal price,
 
-@DecimalMin(value = "0.01", inclusive = true, message = "Price must be greater than 0")
-@Digits(integer = 13, fraction = 2, message = "Price format invalid (max 13 digits, 2 decimals)")
-BigDecimal price,
+    String categoryId,
 
-String categoryId,
+    byte[] imageData,
 
-byte[] imageData,
-
-String imageName
+    String imageName
 ) {
 /**
  * Custom validations in compact constructor

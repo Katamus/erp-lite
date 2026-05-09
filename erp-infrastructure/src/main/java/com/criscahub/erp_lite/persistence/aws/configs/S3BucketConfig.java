@@ -10,6 +10,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 
+import java.net.URI;
+
 @Configuration
 @Slf4j
 //@RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class S3BucketConfig {
                 .build();
 
         var s3ClientBuilder = S3Client.builder()
+                .endpointOverride(URI.create(awsConfig.endpoint()))
                 .region(Region.of(awsConfig.region()))
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .serviceConfiguration(s3Config);

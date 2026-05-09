@@ -4,6 +4,7 @@ import com.criscahub.erp_lite.domain.ports.repositories.CatalogRepositoryPort;
 import com.criscahub.erp_lite.domain.views.CatalogView;
 import com.criscahub.erp_lite.domain.views.ItemsView;
 import com.criscahub.erp_lite.enums.CatalogType;
+import com.criscahub.erp_lite.exceptions.QueryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,12 @@ public class FindCatalogItemByCodeQuery {
 
     public Optional<ItemsView> execute(CatalogType catalogType, String code) {
         log.info("Execute FindCatalogItemByCodeQuery");
+        try {
+            return this.catalogRepository.findItemByTypeAndCode(catalogType, code);
+        }catch (RuntimeException e){
+            throw new QueryException("Error executing FindCatalogItemByCodeQuery");
+        }
 
-        return this.catalogRepository.findItemByTypeAndCode(catalogType, code);
     }
 
 }

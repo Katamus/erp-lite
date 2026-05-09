@@ -44,8 +44,8 @@ public class CreateOrderUseCase {
 
             OrderRoot savedOrder = this.orderRepository.save(orderRoot);
             log.info("Saved order with is {}",savedOrder.getId());
-//            sendEmail(orderRoot,customer);
-            return orderRoot.getId().toString();
+            sendEmail(orderRoot,customer);
+            return orderRoot.getId().value().toString();
         }catch (IllegalArgumentException iae){
             log.error("Invalid data",iae);
             throw new CommandException("Error on create order message:"+iae.getMessage());
