@@ -30,8 +30,6 @@ public class RedisConfig {
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory){
 
         GenericJacksonJsonRedisSerializer serializer = GenericJacksonJsonRedisSerializer.builder()
-                .typePropertyName("_type")
-                .enableUnsafeDefaultTyping()
                 .build();
 
         RedisCacheConfiguration configuration =
@@ -60,8 +58,6 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory connectionFactory){
         GenericJacksonJsonRedisSerializer serializer = GenericJacksonJsonRedisSerializer.builder()
-                .typePropertyName("_type")
-                .enableUnsafeDefaultTyping()
                 .build();
 
         RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
