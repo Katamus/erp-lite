@@ -34,7 +34,7 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
 
             log.info("saved product SUCCESS {}", productSaved);
 
-            return this.productJpaMapper.toDomain(productSaved);
+            return this.productJpaMapper.toDomain(productEntity);
         } catch (Exception e) {
             log.error("Error on persist product", e);
             throw new IllegalStateException(e);

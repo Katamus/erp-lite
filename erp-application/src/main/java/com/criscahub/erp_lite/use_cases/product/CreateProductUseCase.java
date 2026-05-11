@@ -2,6 +2,7 @@ package com.criscahub.erp_lite.use_cases.product;
 
 import com.criscahub.erp_lite.commands.product.CreateProductCommand;
 import com.criscahub.erp_lite.domain.entities.product.*;
+import com.criscahub.erp_lite.domain.ports.messages.EventPublisherPort;
 import com.criscahub.erp_lite.domain.ports.repositories.ProductRepositoryPort;
 import com.criscahub.erp_lite.domain.ports.services.ImageStorageServicePort;
 import com.criscahub.erp_lite.domain.shared.Money;
@@ -16,13 +17,15 @@ import java.util.Currency;
 
 @Slf4j
 @Service
-@Transactional
+@Transactional(noRollbackFor = RuntimeException.class)
 @RequiredArgsConstructor
 public class CreateProductUseCase {
 
     private final ProductRepositoryPort productRepository;
 
     private final ImageStorageServicePort imageStorageServicePort;
+
+    private final EventPublisherPort eventPublisherPort;
 
 
     public String execute(CreateProductCommand command) {
@@ -58,7 +61,7 @@ public class CreateProductUseCase {
 
             log.info("Product persisted with ID: {}", savedProduct.getId().value());
 
-            // TODO: Handle domain events - Sync to MongoDB
+            this.sendEventMessage(product);
 
             return savedProduct.getId().value().toString();
 
@@ -93,5 +96,13 @@ public class CreateProductUseCase {
             log.warn("SKU already exists: {}", sku);
             throw new CommandException("Product with SKU '" + sku + "' already exists");
         }
+    }
+
+    private void sendEventMessage(ProductRoot productSaved){
+
+        productSaved.getDomainEvents().forEach(eventPublisherPort::publish);
+        productSaved.clearDomainEvents();
+        log.info("Event send successfully");
+
     }
 }

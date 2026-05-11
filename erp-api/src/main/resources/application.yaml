@@ -74,6 +74,13 @@ spring:
           ssl:
             trust: smtp.gmail.com #Cambio necesario en spring boot 4
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: debuggeandoideas
+    password: secret
+    virtual-host: /
+
 # Server
 server:
   port: 9090
